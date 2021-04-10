@@ -15,8 +15,19 @@ const main = () => {
   }
 
   else {
-    const meta = getMetaData(arguments[0])
-    console.log(`lat: ${meta.latitude} lon: ${meta.longitude}`)
+    const srcPath = path.resolve(__dirname + arguments[0]);
+      imagemagick.readMetadata(srcPath, (error, metaData) => {
+        let latitude = '';
+        let longitude = '';
+        if (error) throw error;
+        const latitudeValues = metaData.exif.gpsLatitude.split(',');
+        const longitudeValues = metaData.exif.gpsLongitude.split(',');
+    
+        latitude = calculateGpsValues(latitudeValues)
+        longitude = calculateGpsValues(longitudeValues)
+        
+        console.log(`lat: ${latitude} lon: ${longitude}`)
+      });
   }
 };
 
@@ -28,19 +39,18 @@ const calculateGpsValues = (values) => {
 
 const getMetaData = (imgPath) => {
   const srcPath = path.resolve(__dirname + imgPath);
-  let latitude = '';
-  let longitude = '';
 
-  imagemagick.readMetadata(srcPath, (error, metaData) => {
+  const meta = imagemagick.readMetadata(srcPath, (error, metaData) => {
+    let latitude = '';
+    let longitude = '';
     if (error) throw error;
     const latitudeValues = metaData.exif.gpsLatitude.split(',');
     const longitudeValues = metaData.exif.gpsLongitude.split(',');
 
     latitude = calculateGpsValues(latitudeValues)
     longitude = calculateGpsValues(longitudeValues)
+    return {latitude, longitude}
   });
-
-  return {latitude, longitude}
 }
 
 const size = (width, height, imgPath) => {
@@ -68,14 +78,26 @@ const city = (imgPath) => {
 
   const geocoder = nodeGeocoder(options);
 
-  const meta = getMetaData(imgPath)
-  console.log(meta.latitude)
+  const srcPath = path.resolve(__dirname + imgPath);
 
-  geocoder.reverse(
-    { lat: meta.latitude, lon: meta.longitude },
-    (err, res) => {
-    }
-  );
+  imagemagick.readMetadata(srcPath, (error, metaData) => {
+    let latitude = '';
+    let longitude = '';
+    if (error) throw error;
+    const latitudeValues = metaData.exif.gpsLatitude.split(',');
+    const longitudeValues = metaData.exif.gpsLongitude.split(',');
+
+    latitude = calculateGpsValues(latitudeValues)
+    longitude = calculateGpsValues(longitudeValues)
+    
+    geocoder.reverse(
+      { lat: `${latitude}`, lon: `${longitude}` },
+      (err, res) => {
+        console.log(res[0].formattedAddress)
+      }
+    );
+  });
+
 };
 
 main();
