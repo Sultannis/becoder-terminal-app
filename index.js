@@ -1,6 +1,5 @@
 const path = require("path");
 const imagemagick = require("imagemagick");
-const util = require("util");
 const nodeGeocoder = require("node-geocoder");
 
 const main = () => {
@@ -37,34 +36,16 @@ const calculateGpsValues = (values) => {
   return value
 }
 
-const getMetaData = (imgPath) => {
-  const srcPath = path.resolve(__dirname + imgPath);
-
-  const meta = imagemagick.readMetadata(srcPath, (error, metaData) => {
-    let latitude = '';
-    let longitude = '';
-    if (error) throw error;
-    const latitudeValues = metaData.exif.gpsLatitude.split(',');
-    const longitudeValues = metaData.exif.gpsLongitude.split(',');
-
-    latitude = calculateGpsValues(latitudeValues)
-    longitude = calculateGpsValues(longitudeValues)
-    return {latitude, longitude}
-  });
-}
-
 const size = (width, height, imgPath) => {
   const srcPath = path.resolve(__dirname + imgPath);
-  const dstPath = path.resolve(__dirname + imgPath);
+  const dstPath = path.resolve(__dirname + '/data/IMG_0603_resized.HEIC');
 
-  imagemagick.resize({ srcPath, width, height }, (err) => {
+  imagemagick.resize({ srcPath, dstPath, width, height }, (err) => {
     if (err) throw err;
-    console.log(stdout)
-    // console.log(util.inspect(stdout, { showHidden: false, depth: null }));
-    // imagemagick.identify(dstPath, (error, info) => {
-    //   if (error) throw error;
-    //   console.log(info.filesize);
-    // });
+    imagemagick.identify(dstPath, (error, info) => {
+      if (error) throw error;
+      console.log(info.filesize);
+    });
   });
 };
 
@@ -80,7 +61,7 @@ const city = (imgPath) => {
 
   const srcPath = path.resolve(__dirname + imgPath);
 
-  imagemagick.readMetadata(srcPath, (error, metaData) => {
+  imagemagick.readMetadata(srcPath,  (error, metaData) => {
     let latitude = '';
     let longitude = '';
     if (error) throw error;
