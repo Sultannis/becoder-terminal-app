@@ -27,8 +27,9 @@ const handleImageResize = async (width, height, imagePath) => {
     height
   );
   const outputFileSize = await getImageSize(outputFilePath);
-  
-  console.log(outputFileSize);
+  const formattedImageSize = formatImageSize(outputFileSize);
+
+  console.log(formattedImageSize);
 };
 
 const resizeImage = (source, output, width, height) => {
@@ -50,6 +51,10 @@ const getImageSize = (source) => {
       resolve(info.filesize);
     });
   });
+};
+
+const formatImageSize = (size) => {
+  return String(size).slice(0, -1);
 };
 
 const handleLogCity = async (imagePath) => {
