@@ -13,17 +13,17 @@ $ npm install
 ### Get an image meta data
 
 ```bash
-$ node ./index.js "/data/IMG_0603.HEIC"
+$ node ./index.js "/data/image.HEIC"
 ```
 
 ### Resize an image
 
 ```bash
-$ node ./index.js -w 1000 -h 500 "/data/IMG_0603.HEIC"
+$ node ./index.js -w 1000 -h 500 "/data/image.HEIC"
 ```
 
 ### Get city by an image meta data
 
 ```bash
-$ node ./index.js -с "/data/IMG_0603.HEIC"
+$ node ./index.js -с "/data/image.HEIC"
 ```
