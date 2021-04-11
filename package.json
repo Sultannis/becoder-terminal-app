@@ -1,13 +1,13 @@
 {
-  "name": "hackathon",
+  "name": "becoder-task",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "engines": {
+    "node": "^14.15.1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Not So Serious Team",
+  "license": "MIT",
   "dependencies": {
     "imagemagick": "^0.1.3",
     "node-geocoder": "^3.27.0"
