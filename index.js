@@ -24,7 +24,8 @@ const displayMetaData = (imgPath) => {
     const latitude = calculateGpsValues(latitudeValues);
     const longitude = calculateGpsValues(longitudeValues);
 
-    console.log(`lat: ${latitude}\nlon: ${longitude}`);
+    console.log(`lat: ${latitude}`);
+    console.log(`lon: ${longitude}`);
   });
 };
 
